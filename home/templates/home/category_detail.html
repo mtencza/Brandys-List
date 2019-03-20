@@ -1,4 +1,32 @@
-{% extends 'home/base2.html' %}
+{% extends 'home/basealt.html' %}
 {% block content %}
-<h2>{{category.name}}</h2>
-{% endblock %}
+{% if category.services.all %}
+    <h2>{{category.name}} Services</h2>
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Service</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for service in category.services.all|dictsort:"name" %}
+            <tr>
+                <td>{{service.name}}</td>
+            </tr>                  
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% comment %} <p>{{category.services.all}}</p> {% endcomment %}
+{% else %}
+  <p>There are no services for this category.</p>
+{% endif %}
+{% endblock content %}
+
+{% comment %} <h2>Number of categories: {{category_list|length}}</h2>  {% endcomment %}
+
+
+
+
+        
+        

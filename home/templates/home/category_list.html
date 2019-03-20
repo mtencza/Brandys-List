@@ -10,7 +10,7 @@
           <div class="col-md-4">
             <h2>{{category.name}}</h2>
             <p>My category </p>
-            <p><a class="btn btn-secondary" href="https://getbootstrap.com/docs/4.0/examples/jumbotron/#" role="button">View details »</a></p>
+            <p><a class="btn btn-secondary" href="{{ category.get_absolute_url }}" role="button">View Category »</a></p>
           </div>
     {% endfor %}
     </div>
@@ -44,4 +44,4 @@
         
         
         
-{% endblock %}
+{% endblock content %}
