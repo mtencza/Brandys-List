@@ -1,0 +1,47 @@
+{% extends 'home/basealt.html' %}
+{% block content %}
+
+{% comment %} <h1>Category List</h1>
+<h2>Number of categories: {{category_list|length}}</h2> {% endcomment %}
+{% if category_list %}
+    
+    <div class="row">
+    {% for category in category_list|dictsort:"name" %}
+          <div class="col-md-4">
+            <h2>{{category.name}}</h2>
+            <p>My category </p>
+            <p><a class="btn btn-secondary" href="https://getbootstrap.com/docs/4.0/examples/jumbotron/#" role="button">View details »</a></p>
+          </div>
+    {% endfor %}
+    </div>
+    
+
+    {% comment %} {% for category in category_list %}
+    <li>
+        <h2>{{category.name}}</h2>
+        <a href="{{ category.get_absolute_url }}"></a>
+    </li> {% endcomment %}
+
+
+{% else %}
+  <p>There are no categories available.</p>
+{% endif %}
+{% comment %} {% if category_list %}
+
+    <ul>
+
+    {% for category in category_list %}
+    <li>
+        <h2>{{category.name}}</h2>
+        <a href="{{ category.get_absolute_url }}"></a>
+    </li>
+    {% endfor %}
+
+    </ul>
+{% else %}
+  <p>There are no categories available.</p>
+{% endif %} {% endcomment %}
+        
+        
+        
+{% endblock %}

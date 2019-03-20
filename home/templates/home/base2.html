@@ -1,5 +1,5 @@
 <!doctype html>
-
+{% load static %}
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -9,13 +9,13 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <title>Brandy's List</title>
+    <title>Brandy's List2</title>
   </head>
   <body>
     <h1>Brandy's List</h1>
-    {% comment %} <img src="cinqueterre.jpg" class="rounded" alt="Cinque Terre"> {% endcomment %}
-    {% load static %}
-    <img src="{% static "Brandy.jpg" %}" class="rounded" alt="Brandy">
+    {% block content %}
+    {% endblock %}
+    {% comment %} <img src="{% static "Brandy.jpg" %}" class="rounded" alt="Brandy"> {% endcomment %}
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

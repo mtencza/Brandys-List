@@ -22,6 +22,7 @@ class Category(models.Model):
 
     class Meta:
         ordering = ('-pk',)
+        verbose_name_plural = "categories"
 
     def __unicode__(self):
         return u'%s' % self.slug
@@ -32,6 +33,9 @@ class Category(models.Model):
 
     def get_update_url(self):
         return reverse('home_category_update', args=(self.slug,))
+
+    def __str__(self):
+        return self.name
 
 
 class ServiceProvider(models.Model):
@@ -60,6 +64,9 @@ class ServiceProvider(models.Model):
     def get_update_url(self):
         return reverse('home_serviceprovider_update', args=(self.slug,))
 
+    def __str__(self):
+        return self.name
+
 
 class Service(models.Model):
 
@@ -85,5 +92,8 @@ class Service(models.Model):
 
     def get_update_url(self):
         return reverse('home_service_update', args=(self.slug,))
+
+    def __str__(self):
+        return self.name
 
 
