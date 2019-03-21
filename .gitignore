@@ -88,3 +88,4 @@ local_settings.py
 .env
 db.sqlite3
 home/migrations/0001_initial.py
+home/migrations/0002_auto_20190321_0220.py
