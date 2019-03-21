@@ -1,5 +1,7 @@
 {% extends 'home/basealt.html' %}
+
 {% block content %}
+
 {% if category.services.all %}
     <h2>{{category.name}} Services</h2>
     <table class="table table-hover">
@@ -17,16 +19,9 @@
         </tbody>
     </table>
 
-{% comment %} <p>{{category.services.all}}</p> {% endcomment %}
 {% else %}
   <p>There are no services for this category.</p>
 {% endif %}
 {% endblock content %}
-
-{% comment %} <h2>Number of categories: {{category_list|length}}</h2>  {% endcomment %}
-
-
-
-
-        
+   
         

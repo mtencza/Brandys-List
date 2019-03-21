@@ -1,8 +1,6 @@
 {% extends 'home/basealt.html' %}
 {% block content %}
 
-{% comment %} <h1>Category List</h1>
-<h2>Number of categories: {{category_list|length}}</h2> {% endcomment %}
 {% if category_list %}
     
     <div class="row">
@@ -14,34 +12,10 @@
           </div>
     {% endfor %}
     </div>
-    
-
-    {% comment %} {% for category in category_list %}
-    <li>
-        <h2>{{category.name}}</h2>
-        <a href="{{ category.get_absolute_url }}"></a>
-    </li> {% endcomment %}
 
 
 {% else %}
   <p>There are no categories available.</p>
-{% endif %}
-{% comment %} {% if category_list %}
-
-    <ul>
-
-    {% for category in category_list %}
-    <li>
-        <h2>{{category.name}}</h2>
-        <a href="{{ category.get_absolute_url }}"></a>
-    </li>
-    {% endfor %}
-
-    </ul>
-{% else %}
-  <p>There are no categories available.</p>
-{% endif %} {% endcomment %}
-        
-        
+{% endif %}   
         
 {% endblock content %}
