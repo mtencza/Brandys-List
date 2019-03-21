@@ -4,7 +4,7 @@
 
 {% if category.services.all %}
     <h2>{{category.name}} Services</h2>
-    <table class="table table-hover">
+    <table class="table table-bordered table-condensed table-hover">
         <thead>
           <tr>
             <th>Service</th>
@@ -12,13 +12,12 @@
         </thead>
         <tbody>
             {% for service in category.services.all|dictsort:"name" %}
-            <tr>
+            <tr class="table-row" data-href="{{ service.get_absolute_url }}">
                 <td>{{service.name}}</td>
             </tr>                  
             {% endfor %}
         </tbody>
     </table>
-
 {% else %}
   <p>There are no services for this category.</p>
 {% endif %}
