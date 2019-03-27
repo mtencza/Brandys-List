@@ -28,3 +28,7 @@ urlpatterns += (
     path('home/service/detail/<slug:slug>/', views.ServiceDetailView.as_view(), name='home_service_detail'),
     path('home/service/update/<slug:slug>/', views.ServiceUpdateView.as_view(), name='home_service_update'),
 )
+
+urlpatterns += (
+    path('home/form/', views.AddressFormView.as_view(template_name='home/form_1.html'), name='form_1'),
+)

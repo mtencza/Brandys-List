@@ -6,10 +6,10 @@ def index(request):
     context = {}
     return render(request,'home/index.html',context)
 
-from django.views.generic import DetailView, ListView, UpdateView, CreateView
+from django.views.generic import DetailView, ListView, UpdateView, CreateView, FormView
 from .models import Category, ServiceProvider, Service
-from .forms import CategoryForm, ServiceProviderForm, ServiceForm
-
+from .forms import CategoryForm, ServiceProviderForm, ServiceForm, AddressForm
+from django.urls import reverse_lazy
 
 class CategoryListView(ListView):
     model = Category
@@ -59,9 +59,10 @@ class ServiceCreateView(CreateView):
 class ServiceDetailView(DetailView):
     model = Service
 
-
 class ServiceUpdateView(UpdateView):
     model = Service
     form_class = ServiceForm
 
-
+class AddressFormView(FormView):
+    form_class = AddressForm
+    success_url = reverse_lazy('success')
