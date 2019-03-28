@@ -55,6 +55,12 @@ class ServiceCreateView(CreateView):
     model = Service
     form_class = ServiceForm
 
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        context['service'] = self.request.GET.get('service')
+        return context
+
 
 class ServiceDetailView(DetailView):
     model = Service
@@ -65,4 +71,10 @@ class ServiceUpdateView(UpdateView):
 
 class AddressFormView(FormView):
     form_class = AddressForm
-    success_url = reverse_lazy('success')
+    success_url = reverse_lazy('home_serviceprovider_list')
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        context['service'] = self.request.GET.get('service')
+        return context

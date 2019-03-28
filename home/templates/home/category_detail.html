@@ -12,7 +12,7 @@
         </thead>
         <tbody>
             {% for service in category.services.all|dictsort:"name" %}
-            <tr class="table-row" data-href="{% url 'form_1'%}?{{service.name}}" >
+            <tr class="table-row" data-href="{% url 'form_1' %}?service={{service.name}}" >
                 <td>{{service.name}}</td>
             </tr>                  
             {% endfor %}

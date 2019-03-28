@@ -3,6 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+  <h2>{{service}}</h2>
   <form method="post" novalidate>
     {% csrf_token %}
     <div class="form-row">
@@ -27,6 +28,6 @@
       </div>
     </div>
     {{ form.check_me_out|as_crispy_field }}
-    <button type="submit" class="btn btn-primary">Sign in</button>
+    <button type="submit" class="btn btn-primary">View matching Service Providers</button>
   </form>
 {% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'home/basealt.html' %}
+{% block content %}
+
+{% if serviceprovider_list %}
+    
+    <div class="row">
+    {% for serviceprovider in serviceprovider_list|dictsort:"name" %}
+          <div class="col-md-4">
+            <h2>{{serviceprovider.name}}</h2>
+            {% comment %} <p>My category </p>
+            <p><a class="btn btn-secondary" href="{{ category.get_absolute_url }}" role="button">View Category »</a></p> {% endcomment %}
+          </div>
+    {% endfor %}
+    </div>
+
+
+{% else %}
+  <p>There are no matching service providers.</p>
+{% endif %}   
+        
+{% endblock content %}
