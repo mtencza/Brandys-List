@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 
 # Create your views here.
 
@@ -32,6 +33,19 @@ class CategoryUpdateView(UpdateView):
 class ServiceProviderListView(ListView):
     model = ServiceProvider
 
+    def get_queryset(self):
+        result = super(ServiceProviderListView, self).get_queryset()
+        return result
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context        
+        context = super().get_context_data(**kwargs)
+        context['service'] = self.request.GET.get('service')
+        context['zip'] = self.request.session['zip']
+        context['state'] = self.request.session['state']
+        context['sort_distance'] = self.request.session['sort_distance']
+        return context
+
 
 class ServiceProviderCreateView(CreateView):
     model = ServiceProvider
@@ -55,11 +69,7 @@ class ServiceCreateView(CreateView):
     model = Service
     form_class = ServiceForm
 
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super().get_context_data(**kwargs)
-        context['service'] = self.request.GET.get('service')
-        return context
+    
 
 
 class ServiceDetailView(DetailView):
@@ -72,6 +82,13 @@ class ServiceUpdateView(UpdateView):
 class AddressFormView(FormView):
     form_class = AddressForm
     success_url = reverse_lazy('home_serviceprovider_list')
+
+    def form_valid(self, form):
+        st = form.STATES
+        self.request.session['state'] = form.cleaned_data['state']
+        self.request.session['zip'] = form.cleaned_data['zip_code']
+        self.request.session['sort_distance'] = form.cleaned_data['sort_distance']
+        return redirect('home_serviceprovider_list')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

@@ -25,6 +25,17 @@ STATES = (
     ('SP', 'Sao Paulo'),
     ('RJ', 'Rio de Janeiro')
 )
+
+SORT_DISTANCES = (
+    ('','Select Distance'),
+    ('5', '5 Miles'),
+    ('10', '10 Miles'),
+    ('20', '20 Miles'),
+    ('50', '50 Miles'),
+    ('Any', 'Any Distance')
+    
+)
+
 class AddressForm(forms.Form):
     email = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
     password = forms.CharField(widget=forms.PasswordInput())
@@ -39,4 +50,6 @@ class AddressForm(forms.Form):
     state = forms.ChoiceField(choices=STATES)
     zip_code = forms.CharField(label='Zip')
     check_me_out = forms.BooleanField(required=False)
+    sort_distance = forms.ChoiceField(choices=SORT_DISTANCES,label='Sort Distance')
     
+
