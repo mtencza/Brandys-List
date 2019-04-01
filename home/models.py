@@ -56,9 +56,8 @@ class ServiceProvider(models.Model):
     #Contact Fields
     phone_number = PhoneField(blank=True, help_text='Provider Phone Number')
     email = models.EmailField(max_length=70,blank=True)
-    website= models.URLField(max_length=250)
+    website = models.URLField(max_length=250)
     description = models.TextField(blank=True, null=True)
-
 
     # Relationship Fields
     services = models.ManyToManyField(
@@ -86,12 +85,71 @@ class ServiceProvider(models.Model):
 ##########################
 #        Address
 ##########################
+STATES = (
+    ('AL', 'Alabama'),
+    ('AK', 'Alaska'),
+    ('AZ', 'Arizona'),
+    ('AR', 'Arkansas'),
+    ('CA', 'California'),
+    ('CO', 'Colorado'),
+    ('CT', 'Connecticut'),
+    ('DE', 'Delaware'),
+    ('FL', 'Florida'),
+    ('GA', 'Georgia'),
+    ('HI', 'Hawaii'),
+    ('ID', 'Idaho'),
+    ('IL', 'Illinois'),
+    ('IN', 'Indiana'),
+    ('IA', 'Iowa'),
+    ('KS', 'Kansas'),
+    ('KY', 'Kentucky'),
+    ('LA', 'Louisiana'),
+    ('ME', 'Maine'),
+    ('MD', 'Maryland'),
+    ('MA', 'Massachusetts'),
+    ('MI', 'Michigan'),
+    ('MN', 'Minnesota'),
+    ('MS', 'Mississippi'),
+    ('MO', 'Missouri'),
+    ('MT', 'Montana'),
+    ('NE', 'Nebraska'),
+    ('NV', 'Nevada'),
+    ('NH', 'New Hampshire'),
+    ('NJ', 'New Jersey'),
+    ('NM', 'New Mexico'),
+    ('NY', 'New York'),
+    ('NC', 'Nort Carolina'),
+    ('ND', 'North Dakota'),
+    ('OH', 'Ohio'),
+    ('OK', 'Oklahoma'),
+    ('OR', 'Oregon'),
+    ('PA', 'Pennsylvania'),
+    ('RI', 'Rhode Island'),
+    ('SC', 'South Carolina'),
+    ('SD', 'South Dakota'),
+    ('TN', 'Tennessee'),
+    ('TX', 'Texas'),
+    ('UT', 'Utah'),
+    ('VT', 'Vermont'),
+    ('VA', 'Virginia'),
+    ('WA', 'Washington'),
+    ('WV', 'West Virginia'),
+    ('WI', 'Wisconsin'),
+    ('WY', 'Wyoming'),
+)
 class Address(models.Model):
     zip_validator = RegexValidator(r'^[0-9]{5}?$', 'Only 5 digit numbers allowed.')
     street = models.TextField()
     city = models.TextField()
-    province = models.TextField()
+    state = models.CharField(max_length=1, choices=STATES)
     zip_code = models.CharField(max_length=5,validators=[zip_validator])
+
+    # Relationship Fields
+    service_provider = models.ForeignKey(
+        ServiceProvider,
+        on_delete=models.CASCADE,
+        related_name="street_address"
+    )
 
 
 
@@ -126,8 +184,6 @@ class ProviderHours(models.Model):
     available_by_appt = models.BooleanField(default=True)
 
 
-
-
 ##########################
 #       Service
 ##########################
@@ -140,7 +196,8 @@ class Service(models.Model):
     # Relationship Fields
     Category = models.ForeignKey(
         'home.Category',
-        on_delete=models.CASCADE, related_name="services", 
+        on_delete=models.CASCADE, 
+        related_name="services", 
     )
 
     class Meta:

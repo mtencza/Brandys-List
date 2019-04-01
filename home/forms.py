@@ -1,6 +1,6 @@
 from django import forms
 from .models import Category, ServiceProvider, Service
-
+from django.core.validators import RegexValidator
 
 class CategoryForm(forms.ModelForm):
     class Meta:
@@ -20,10 +20,56 @@ class ServiceForm(forms.ModelForm):
         fields = ['name', 'Category']
 
 STATES = (
-    ('', 'Choose...'),
-    ('MG', 'Minas Gerais'),
-    ('SP', 'Sao Paulo'),
-    ('RJ', 'Rio de Janeiro')
+    ('AL', 'Alabama'),
+    ('AK', 'Alaska'),
+    ('AZ', 'Arizona'),
+    ('AR', 'Arkansas'),
+    ('CA', 'California'),
+    ('CO', 'Colorado'),
+    ('CT', 'Connecticut'),
+    ('DE', 'Delaware'),
+    ('FL', 'Florida'),
+    ('GA', 'Georgia'),
+    ('HI', 'Hawaii'),
+    ('ID', 'Idaho'),
+    ('IL', 'Illinois'),
+    ('IN', 'Indiana'),
+    ('IA', 'Iowa'),
+    ('KS', 'Kansas'),
+    ('KY', 'Kentucky'),
+    ('LA', 'Louisiana'),
+    ('ME', 'Maine'),
+    ('MD', 'Maryland'),
+    ('MA', 'Massachusetts'),
+    ('MI', 'Michigan'),
+    ('MN', 'Minnesota'),
+    ('MS', 'Mississippi'),
+    ('MO', 'Missouri'),
+    ('MT', 'Montana'),
+    ('NE', 'Nebraska'),
+    ('NV', 'Nevada'),
+    ('NH', 'New Hampshire'),
+    ('NJ', 'New Jersey'),
+    ('NM', 'New Mexico'),
+    ('NY', 'New York'),
+    ('NC', 'Nort Carolina'),
+    ('ND', 'North Dakota'),
+    ('OH', 'Ohio'),
+    ('OK', 'Oklahoma'),
+    ('OR', 'Oregon'),
+    ('PA', 'Pennsylvania'),
+    ('RI', 'Rhode Island'),
+    ('SC', 'South Carolina'),
+    ('SD', 'South Dakota'),
+    ('TN', 'Tennessee'),
+    ('TX', 'Texas'),
+    ('UT', 'Utah'),
+    ('VT', 'Vermont'),
+    ('VA', 'Virginia'),
+    ('WA', 'Washington'),
+    ('WV', 'West Virginia'),
+    ('WI', 'Wisconsin'),
+    ('WY', 'Wyoming'),
 )
 
 SORT_DISTANCES = (
@@ -37,19 +83,16 @@ SORT_DISTANCES = (
 )
 
 class AddressForm(forms.Form):
-    email = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
-    password = forms.CharField(widget=forms.PasswordInput())
-    address_1 = forms.CharField(
+    zip_validator = RegexValidator(r'^[0-9]{5}?$', 'Only 5 digit numbers allowed.')
+    email = forms.EmailField()
+    address = forms.CharField(
         label='Address',
         widget=forms.TextInput(attrs={'placeholder': '1234 Main St'})
     )
-    address_2 = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'Apartment, studio, or floor'})
-    )
+
     city = forms.CharField()
     state = forms.ChoiceField(choices=STATES)
-    zip_code = forms.CharField(label='Zip')
-    check_me_out = forms.BooleanField(required=False)
+    zip_code = forms.CharField(max_length=5,validators=[zip_validator],label='Zip Code')
     sort_distance = forms.ChoiceField(choices=SORT_DISTANCES,label='Sort Distance')
     
 
