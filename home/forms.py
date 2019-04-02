@@ -1,5 +1,5 @@
 from django import forms
-from .models import Category, ServiceProvider, Service
+from .models import Category, ServiceProvider, Service, Address
 from django.core.validators import RegexValidator
 
 class CategoryForm(forms.ModelForm):
@@ -18,6 +18,7 @@ class ServiceForm(forms.ModelForm):
     class Meta:
         model = Service
         fields = ['name', 'Category']
+
 
 STATES = (
     ('AL', 'Alabama'),

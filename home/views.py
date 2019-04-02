@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
+from geopy.geocoders import Nominatim
 
 # Create your views here.
 
@@ -29,12 +30,21 @@ class CategoryUpdateView(UpdateView):
     model = Category
     form_class = CategoryForm
 
-
+geolocator = Nominatim(user_agent="home")
 class ServiceProviderListView(ListView):
     model = ServiceProvider
 
     def get_queryset(self):
         result = super(ServiceProviderListView, self).get_queryset()
+        
+        location = geolocator.geocode("175 5th Avenue NYC")
+        sesh = self.request.session
+        user_location = geolocator.geocode(sesh['address'] + ' '/
+                                      sesh['city'] + ' '/
+                                      sesh['state'] + ' '/
+                                      sesh['zip']
+                                      )
+        
         return result
 
     def get_context_data(self, **kwargs):
@@ -79,15 +89,71 @@ class ServiceUpdateView(UpdateView):
     model = Service
     form_class = ServiceForm
 
+
+STATES = (
+    ('AL', 'Alabama'),
+    ('AK', 'Alaska'),
+    ('AZ', 'Arizona'),
+    ('AR', 'Arkansas'),
+    ('CA', 'California'),
+    ('CO', 'Colorado'),
+    ('CT', 'Connecticut'),
+    ('DE', 'Delaware'),
+    ('FL', 'Florida'),
+    ('GA', 'Georgia'),
+    ('HI', 'Hawaii'),
+    ('ID', 'Idaho'),
+    ('IL', 'Illinois'),
+    ('IN', 'Indiana'),
+    ('IA', 'Iowa'),
+    ('KS', 'Kansas'),
+    ('KY', 'Kentucky'),
+    ('LA', 'Louisiana'),
+    ('ME', 'Maine'),
+    ('MD', 'Maryland'),
+    ('MA', 'Massachusetts'),
+    ('MI', 'Michigan'),
+    ('MN', 'Minnesota'),
+    ('MS', 'Mississippi'),
+    ('MO', 'Missouri'),
+    ('MT', 'Montana'),
+    ('NE', 'Nebraska'),
+    ('NV', 'Nevada'),
+    ('NH', 'New Hampshire'),
+    ('NJ', 'New Jersey'),
+    ('NM', 'New Mexico'),
+    ('NY', 'New York'),
+    ('NC', 'Nort Carolina'),
+    ('ND', 'North Dakota'),
+    ('OH', 'Ohio'),
+    ('OK', 'Oklahoma'),
+    ('OR', 'Oregon'),
+    ('PA', 'Pennsylvania'),
+    ('RI', 'Rhode Island'),
+    ('SC', 'South Carolina'),
+    ('SD', 'South Dakota'),
+    ('TN', 'Tennessee'),
+    ('TX', 'Texas'),
+    ('UT', 'Utah'),
+    ('VT', 'Vermont'),
+    ('VA', 'Virginia'),
+    ('WA', 'Washington'),
+    ('WV', 'West Virginia'),
+    ('WI', 'Wisconsin'),
+    ('WY', 'Wyoming'),
+)
+
 class AddressFormView(FormView):
     form_class = AddressForm
     success_url = reverse_lazy('home_serviceprovider_list')
 
     def form_valid(self, form):
-        st = form.STATES
+        self.request.session['address'] = form.cleaned_data['address']
+        self.request.session['city'] = form.cleaned_data['city']
         self.request.session['state'] = form.cleaned_data['state']
         self.request.session['zip'] = form.cleaned_data['zip_code']
         self.request.session['sort_distance'] = form.cleaned_data['sort_distance']
+        self.request.session['service'] = self.request.GET.get('service')
         return redirect('home_serviceprovider_list')
 
     def get_context_data(self, **kwargs):

@@ -13,6 +13,9 @@ from django.db import models as models
 from django_extensions.db import fields as extension_fields
 from phone_field import PhoneField
 from django.core.validators import RegexValidator
+from django.contrib.gis.db.models import PointField
+from django.contrib.gis.geos import Point
+from geopy.geocoders import Nominatim
 import uuid
 
 
@@ -137,19 +140,37 @@ STATES = (
     ('WI', 'Wisconsin'),
     ('WY', 'Wyoming'),
 )
+zip_validator = RegexValidator(r'^[0-9]{5}?$', 'Only 5 digit numbers allowed.')
+geolocator = Nominatim(user_agent="home")
 class Address(models.Model):
-    zip_validator = RegexValidator(r'^[0-9]{5}?$', 'Only 5 digit numbers allowed.')
+    location = PointField(srid=4326, geography=True, blank=True, null=True)
     street = models.TextField()
     city = models.TextField()
-    state = models.CharField(max_length=1, choices=STATES)
+    state = models.CharField(max_length=2, choices=STATES)
     zip_code = models.CharField(max_length=5,validators=[zip_validator])
 
     # Relationship Fields
-    service_provider = models.ForeignKey(
+    service_provider = models.OneToOneField(
         ServiceProvider,
         on_delete=models.CASCADE,
-        related_name="street_address"
+        primary_key=True,
     )
+
+    def save(self, *args, **kwargs):
+        if not self.location:
+            provider_point = geolocator.geocode(self.street + ' '/
+                                      self.city + ' '/
+                                      self.state + ' '/
+                                      self.zip_code
+                                      )
+            self.location = Point(provider_point.latitude, provider_point.longitude, srid=4326)
+        super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name_plural = "addresses"
+
+    def __str__(self):
+        return self.street
 
 
 

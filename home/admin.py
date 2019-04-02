@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from .models import Category, ServiceProvider, Service
+from .models import Category, ServiceProvider, Service, Address
 
 class CategoryAdminForm(forms.ModelForm):
 
@@ -45,4 +45,11 @@ class ServiceAdmin(admin.ModelAdmin):
     readonly_fields = ['slug']
 
 admin.site.register(Service, ServiceAdmin)
+
+class AddressAdmin(admin.ModelAdmin):
+    class Meta:
+        model = Address
+        fields = '__all__'
+
+admin.site.register(Address, AddressAdmin)
 
