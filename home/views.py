@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from geopy.geocoders import Nominatim
+from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.geos import Point
 
 # Create your views here.
 
 def index(request):
     context = {}
-    return render(request,'home/index.html',context)
+    return render(request, 'home/index.html', context)
 
 from django.views.generic import DetailView, ListView, UpdateView, CreateView, FormView
 from .models import Category, ServiceProvider, Service
@@ -37,14 +39,17 @@ class ServiceProviderListView(ListView):
     def get_queryset(self):
         result = super(ServiceProviderListView, self).get_queryset()
         
-        location = geolocator.geocode("175 5th Avenue NYC")
+
         sesh = self.request.session
-        user_location = geolocator.geocode(sesh['address'] + ' '/
-                                      sesh['city'] + ' '/
-                                      sesh['state'] + ' '/
-                                      sesh['zip']
-                                      )
-        
+        user_geolocation = geolocator.geocode(sesh['address'] + ' ' + sesh['city'] + ' ' + sesh['state'] + ' ' + sesh['zip'])
+        user_location = Point(user_geolocation.longitude, user_geolocation.latitude, srid=4326)
+        #Vacancy.objects.filter(location__dwithin=(ref_location, 50000))\
+        #.annotate(distance=Distance("location", ref_location))\
+        #.order_by("distance")
+        #queryset = Model.objects.order_by('modelextended__author')
+        result = ServiceProvider.objects.filter(location__dwithin=(user_location, 50000))\
+        .annotate(distance=Distance("address__location", user_location))\
+        .order_by("distance")
         return result
 
     def get_context_data(self, **kwargs):

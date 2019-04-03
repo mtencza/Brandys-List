@@ -144,6 +144,8 @@ zip_validator = RegexValidator(r'^[0-9]{5}?$', 'Only 5 digit numbers allowed.')
 geolocator = Nominatim(user_agent="home")
 class Address(models.Model):
     location = PointField(srid=4326, geography=True, blank=True, null=True)
+    #long = models.FloatField()
+    #lat = models.FloatField()
     street = models.TextField()
     city = models.TextField()
     state = models.CharField(max_length=2, choices=STATES)
@@ -158,12 +160,9 @@ class Address(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.location:
-            provider_point = geolocator.geocode(self.street + ' '/
-                                      self.city + ' '/
-                                      self.state + ' '/
-                                      self.zip_code
-                                      )
-            self.location = Point(provider_point.latitude, provider_point.longitude, srid=4326)
+            addr = self.street + ' ' + self.city + ' ' + self.state + ' ' + self.zip_code
+            provider_point = geolocator.geocode(addr)
+            self.location = Point(provider_point.longitude,provider_point.latitude)
         super().save(*args, **kwargs)
 
     class Meta:

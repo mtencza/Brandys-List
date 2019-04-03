@@ -93,7 +93,7 @@ class AddressForm(forms.Form):
 
     city = forms.CharField()
     state = forms.ChoiceField(choices=STATES)
-    zip_code = forms.CharField(max_length=5,validators=[zip_validator],label='Zip Code')
-    sort_distance = forms.ChoiceField(choices=SORT_DISTANCES,label='Sort Distance')
+    zip_code = forms.CharField(max_length=5,validators=[zip_validator], label='Zip Code')
+    sort_distance = forms.ChoiceField(choices=SORT_DISTANCES, label='Sort Distance')
     
 
