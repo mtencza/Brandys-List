@@ -3,7 +3,9 @@ from django.shortcuts import redirect
 from geopy.geocoders import Nominatim
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
-
+from django.contrib.gis.measure import D
+#from django.contrib.gis.measure import Distance
+from django.contrib.gis.geos import *
 # Create your views here.
 
 def index(request):
@@ -39,17 +41,12 @@ class ServiceProviderListView(ListView):
     def get_queryset(self):
         result = super(ServiceProviderListView, self).get_queryset()
         
-
         sesh = self.request.session
         user_geolocation = geolocator.geocode(sesh['address'] + ' ' + sesh['city'] + ' ' + sesh['state'] + ' ' + sesh['zip'])
         user_location = Point(user_geolocation.longitude, user_geolocation.latitude, srid=4326)
-        #Vacancy.objects.filter(location__dwithin=(ref_location, 50000))\
-        #.annotate(distance=Distance("location", ref_location))\
-        #.order_by("distance")
-        #queryset = Model.objects.order_by('modelextended__author')
-        result = ServiceProvider.objects.filter(location__dwithin=(user_location, 50000))\
-        .annotate(distance=Distance("address__location", user_location))\
-        .order_by("distance")
+        #result = ServiceProvider.objects.annotate(distance=Distance("address__location", user_location)).order_by("distance")
+        result = ServiceProvider.objects.filter(address__location__distance_lte=(user_location, 50000)).annotate(distance=Distance("address__location", user_location)).order_by("distance")
+        #result = ServiceProvider.objects.filter(location__distance_lte=(user_location, D(50000))).annotate(distance=Distance("address__location", user_location)).order_by("distance")
         return result
 
     def get_context_data(self, **kwargs):
