@@ -1,18 +1,39 @@
 {% extends 'home/basealt.html' %}
 {% block content %}
 
-{% if serviceprovider_list %}
-    
+{% comment %} {% if serviceprovider_list %}
+    <h2>{{ service }} service providers within {{ sort_distance }} miles of {{ address }}</h2>
     <div class="row">
     {% for serviceprovider in serviceprovider_list|dictsort:"name" %}
           <div class="col-md-4">
-            <h2>{{serviceprovider.name}}</h2>
+            <h3>{{serviceprovider.name}}</h3>
             {% comment %} <p>My category </p>
             <p><a class="btn btn-secondary" href="{{ category.get_absolute_url }}" role="button">View Category »</a></p> {% endcomment %}
-          </div>
-    {% endfor %}
-    </div>
+        {% comment%}  </div>
+    { endfor %}
+    <div><div class="card-group">
+ {% endcomment %}
 
+
+{% if serviceprovider_list %}
+
+    {% if sort_distance == "Any" %}
+        <h2>{{ service }} service providers within any distance of {{ address }}</h2>
+    {% else %}
+        <h2>{{ service }} service providers within {{ sort_distance }} miles of {{ address }}</h2>
+    {% endif%}
+
+    {% for serviceprovider in serviceprovider_list|dictsort:"name" %}
+        <br>
+        <div class="card">
+            {% comment %} <h4 class="card-title padding">{{serviceprovider.name}}</h4> {% endcomment %}
+            <h4 class="padding">{{serviceprovider.name}}</h4>
+            <div class="card-body">
+                <a class="btn btn-primary btn-md" href="{{ serviceprovider.get_absolute_url }}" role="button">Learn more »</a>
+            </div>
+        </div>
+    {% endfor %}
+    
 
 {% else %}
   <p>There are no matching service providers.</p>
