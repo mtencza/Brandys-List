@@ -74,13 +74,11 @@ STATES = (
 )
 
 SORT_DISTANCES = (
-    ('','Select Distance'),
+    ('Any', 'Any Distance'),
     ('5', '5 Miles'),
     ('10', '10 Miles'),
     ('20', '20 Miles'),
-    ('50', '50 Miles'),
-    ('Any', 'Any Distance')
-    
+    ('50', '50 Miles')
 )
 
 class AddressForm(forms.Form):

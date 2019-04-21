@@ -47,9 +47,8 @@ class ServiceAdmin(admin.ModelAdmin):
 admin.site.register(Service, ServiceAdmin)
 
 class AddressAdmin(admin.ModelAdmin):
-    class Meta:
-        model = Address
-        fields = '__all__'
+    fields = ['street', 'city', 'state', 'zip_code', 'service_provider']
+
 
 admin.site.register(Address, AddressAdmin)
 

@@ -1,21 +1,26 @@
+# pylint: disable=unused-wildcard-import
+# pylint: disable=wildcard-import
+# pylint: disable=missing-docstring
+# pylint: disable=too-many-ancestors
 from django.shortcuts import render
 from django.shortcuts import redirect
-from geopy.geocoders import Nominatim
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
-#from django.contrib.gis.measure import Distance
 from django.contrib.gis.geos import *
+from django.views.generic import DetailView, ListView, UpdateView, CreateView, FormView
+from django.urls import reverse_lazy
+from geopy.geocoders import Nominatim
+from .models import Category, ServiceProvider, Service
+from .forms import CategoryForm, ServiceProviderForm, ServiceForm, AddressForm
+
 # Create your views here.
 
 def index(request):
     context = {}
     return render(request, 'home/index.html', context)
 
-from django.views.generic import DetailView, ListView, UpdateView, CreateView, FormView
-from .models import Category, ServiceProvider, Service
-from .forms import CategoryForm, ServiceProviderForm, ServiceForm, AddressForm
-from django.urls import reverse_lazy
+
 
 class CategoryListView(ListView):
     model = Category
@@ -44,15 +49,21 @@ class ServiceProviderListView(ListView):
         sesh = self.request.session
         user_geolocation = geolocator.geocode(sesh['address'] + ' ' + sesh['city'] + ' ' + sesh['state'] + ' ' + sesh['zip'])
         user_location = Point(user_geolocation.longitude, user_geolocation.latitude, srid=4326)
+        if sesh['sort_distance'] == 'Any':
+            miles = 1000
+        else:
+            miles = sesh['sort_distance']
         #result = ServiceProvider.objects.annotate(distance=Distance("address__location", user_location)).order_by("distance")
-        result = ServiceProvider.objects.filter(address__location__distance_lte=(user_location, 50000)).annotate(distance=Distance("address__location", user_location)).order_by("distance")
+        result = ServiceProvider.objects.filter(address__location__distance_lte=(user_location, D(mi=miles))).annotate(distance=Distance("address__location", user_location)).order_by("distance")
         #result = ServiceProvider.objects.filter(location__distance_lte=(user_location, D(50000))).annotate(distance=Distance("address__location", user_location)).order_by("distance")
         return result
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context        
         context = super().get_context_data(**kwargs)
-        context['service'] = self.request.GET.get('service')
+        #context['service'] = self.request.GET.get('service')
+        context['address'] = self.request.session['address']
+        context['service'] = self.request.session['service']
         context['zip'] = self.request.session['zip']
         context['state'] = self.request.session['state']
         context['sort_distance'] = self.request.session['sort_distance']
