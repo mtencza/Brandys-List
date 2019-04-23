@@ -1,18 +1,27 @@
 {% extends 'home/basealt.html' %}
 {% block content %}
 
-{% comment %} {% if serviceprovider_list %}
-    <h2>{{ service }} service providers within {{ sort_distance }} miles of {{ address }}</h2>
-    <div class="row">
-    {% for serviceprovider in serviceprovider_list|dictsort:"name" %}
-          <div class="col-md-4">
-            <h3>{{serviceprovider.name}}</h3>
-            {% comment %} <p>My category </p>
-            <p><a class="btn btn-secondary" href="{{ category.get_absolute_url }}" role="button">View Category »</a></p> {% endcomment %}
-        {% comment%}  </div>
-    { endfor %}
-    <div><div class="card-group">
- {% endcomment %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.checked {
+  color: orange;
+}
+
+a:link {
+  text-decoration: bold;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+
+
+a{
+    font-size: 25px;
+}
+
+</style>
 
 
 {% if serviceprovider_list %}
@@ -26,10 +35,20 @@
     {% for serviceprovider in serviceprovider_list|dictsort:"name" %}
         <br>
         <div class="card">
-            {% comment %} <h4 class="card-title padding">{{serviceprovider.name}}</h4> {% endcomment %}
-            <h4 class="padding">{{serviceprovider.name}}</h4>
+            {% comment %} <h4 class="padding">{{serviceprovider.name}}</h4> {% endcomment %}
+            
             <div class="card-body">
-                <a class="btn btn-primary btn-md" href="{{ serviceprovider.get_absolute_url }}" role="button">Learn more »</a>
+                <b><a href="{{ serviceprovider.get_absolute_url }}">{{serviceprovider.name}}</a></b>
+                <br>
+                <br>
+                <p>{{serviceprovider.description}}</p>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+                <br>
+                <a class="btn btn-primary btn-md" href="{{ serviceprovider.get_absolute_url }}" role="button">Request a quote</a>
             </div>
         </div>
     {% endfor %}
