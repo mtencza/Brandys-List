@@ -106,9 +106,14 @@ body{
     font-weight: 600;
     color: #0062cc;
 }
+.provider-desription p{
+    color: #495057;
+    padding: 0;
+}
 .checked {
   color: orange;
 }
+
 </style>
 <div class="container emp-profile">
             <form method="post">
@@ -120,9 +125,9 @@ body{
                     </div>
                     <div class="col-md-6">
                         <div class="profile-head">
-                                    <h5>
+                                    <h1>
                                         {{serviceprovider.name}}
-                                    </h5>
+                                    </h1>
                                     <h6>
                                         Web Developer and Designer
                                     </h6>
@@ -146,19 +151,20 @@ body{
                 <div class="row">
                     <div class="col-md-4">
                         <div class="profile-work">
-                            <p>WORK LINK</p>
+                            <p>COMPANY CONTACT</p>
                             <div class="profile-work2">
-                            <p>Here</p>
-                            <p>Here</p>
-                            <p>Here</p>
+                                <p>Name : {{serviceprovider.contact_name }}</p>
+                                <p>Phone #: {{serviceprovider.phone_number }}</p>
+                                <p>Email: {{serviceprovider.email }}</p>
+                                <p>{{serviceprovider.address.street }}</p>
                             </div>
-                            <p>SKILLS</p>
+                            <p>HOURS</p>
                             <div class="profile-work2">
-                            <p>Web Designer</p>
-                            <p>Web Developer</p>
-                            <p>WordPress</p>
-                            <p>WooCommerce</p>
-                            <p>PHP, .Net</p>
+                                <p>Web Designer</p>
+                                <p>Web Developer</p>
+                                <p>WordPress</p>
+                                <p>WooCommerce</p>
+                                <p>PHP, .Net</p>
                             </div>
                         </div>
                     </div>
@@ -166,11 +172,8 @@ body{
                         <div class="tab-content profile-tab" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                         <div class="row">
-                                            <div class="col-md-6">
-                                                <label>User Id</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p>Kshiti123</p>
+                                            <div class ="provider-desription">
+                                                <p>{{serviceprovider.description}}</p> 
                                             </div>
                                         </div>
                                         <div class="row">
@@ -207,14 +210,18 @@ body{
                                         </div>
                             </div>
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Experience</label>
+                                        
+                                        {% for hours in serviceprovider.hours.all%}
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label>{{hours.get_weekday_display}}</label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <p>{{hours.from_hour}} - {{hours.to_hour}}</p>
+                                                </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <p>Expert</p>
-                                            </div>
-                                        </div>
+                                        {% endfor %}
+                                        
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label>Hourly Rate</label>

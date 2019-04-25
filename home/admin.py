@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from .models import Category, ServiceProvider, Service, Address
+from .models import Category, ServiceProvider, Service, Address, ProviderHours
 
 class CategoryAdminForm(forms.ModelForm):
 
@@ -51,4 +51,13 @@ class AddressAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Address, AddressAdmin)
+
+class ProviderHoursAdmin(admin.ModelAdmin):
+
+    class Meta:
+        model = ProviderHours
+        fields = '__all__'
+
+
+admin.site.register(ProviderHours, ProviderHoursAdmin)
 

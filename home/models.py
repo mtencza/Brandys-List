@@ -53,12 +53,13 @@ class ServiceProvider(models.Model):
 
     # Fields
     name = models.CharField(max_length=255)
+    contact_name = models.CharField(max_length=100)
     slug = extension_fields.AutoSlugField(populate_from='name', blank=True)
-    id = models.UUIDField(primary_key=True,default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
 
     #Contact Fields
     phone_number = PhoneField(blank=True, help_text='Provider Phone Number')
-    email = models.EmailField(max_length=70,blank=True)
+    email = models.EmailField(max_length=70, blank=True)
     website = models.URLField(max_length=250)
     description = models.TextField(blank=True, null=True)
 
@@ -149,20 +150,21 @@ class Address(models.Model):
     street = models.TextField()
     city = models.TextField()
     state = models.CharField(max_length=2, choices=STATES)
-    zip_code = models.CharField(max_length=5,validators=[zip_validator])
+    zip_code = models.CharField(max_length=5, validators=[zip_validator])
 
     # Relationship Fields
     service_provider = models.OneToOneField(
         ServiceProvider,
         on_delete=models.CASCADE,
         primary_key=True,
+        related_name='address',
     )
 
     def save(self, *args, **kwargs):
         if not self.location:
             addr = self.street + ' ' + self.city + ' ' + self.state + ' ' + self.zip_code
             provider_point = geolocator.geocode(addr)
-            self.location = Point(provider_point.longitude,provider_point.latitude)
+            self.location = Point(provider_point.longitude, provider_point.latitude)
         super().save(*args, **kwargs)
 
     class Meta:
@@ -199,8 +201,8 @@ class ProviderHours(models.Model):
         related_name="hours"
     )
     
-    from_hour = models.TimeField()
-    to_hour = models.TimeField()
+    from_hour = models.TimeField(null=True)
+    to_hour = models.TimeField(null=True)
     available_by_appt = models.BooleanField(default=True)
 
 
